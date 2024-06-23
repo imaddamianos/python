@@ -14,7 +14,7 @@ from ecapture import ecapture as ec
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 
-from functions import calculate, sendEmail, speak, stop_assistant, takeCommand, username, wishMe
+from functions import calculate, load_user_name, save_user_name, sendEmail, speak, stop_assistant, takeCommand, username, wishMe
 
 
 if __name__ == '__main__':
@@ -24,8 +24,9 @@ if __name__ == '__main__':
 
     wishMe()
     username()
+    assname = load_user_name()
     
-    assname = "siri"  # Default assistant name
+    # assname = "siri"  # Default assistant name
 
     while True:
         query = takeCommand().lower()
@@ -82,17 +83,19 @@ if __name__ == '__main__':
             except Exception as e:
                 print(e)
                 speak("I am not able to send this email")
-# check
+
         elif 'how are you' in query:
             speak("I am fine, Thank you")
             speak("How are you, Sir")
 
         elif 'fine' in query or "good" in query:
             speak("It's good to know that you're fine")
-# check
+
         elif "change my name to" in query:
             query = query.replace("change my name to", "")
+            save_user_name(query)
             assname = query
+            speak(f"I will call you {query}")
 
         elif "change name" in query:
             speak("What would you like to call me, Sir?")
@@ -106,14 +109,13 @@ if __name__ == '__main__':
 
         elif 'exit' in query or 'stop' in query:
             stop_assistant()
-# check
+
         elif "who made you" in query or "who created you" in query:
             speak("I have been created by the genius imad damianos.")
-# check
 
         elif 'joke' in query:
             speak(pyjokes.get_joke())
-# check
+
         elif "calculate" in query:
             calculate(query)
 
@@ -121,30 +123,30 @@ if __name__ == '__main__':
             query = query.replace("search", "")
             query = query.replace("play", "")
             webbrowser.open(query)
-# check
+
         elif "who i am" in query:
             speak("If you talk then definitely you're human.")
-# check
+
         elif "why you came to the world" in query:
             speak("Thanks to Gaurav. Further, it's a secret")
-
+#not working
         elif 'power point presentation' in query:
             speak("Opening PowerPoint presentation")
             power = "/Users/your_username/Documents/Presentation/Voice_Assistant.pptx"  # Update this path
             os.system(f"open {power}")
-# check
+
         elif 'is love' in query:
             speak("It is the 7th sense that destroys all other senses")
-# check
+
         elif "who are you" in query:
             speak("I am your virtual assistant created by Gaurav")
-# check
+
         elif 'reason for you' in query:
             speak("I was created as a Minor project by Mister Gaurav")
-# checkv
+
         elif 'change background' in query:
             speak("This feature is not supported on macOS")
-
+#not working
         elif 'news' in query:
             try:
                 jsonObj = urlopen('https://newsapi.org/v1/articles?source=the-times-of-india&sortBy=top&apiKey=YOUR_API_KEY')
@@ -159,7 +161,7 @@ if __name__ == '__main__':
                     i += 1
             except Exception as e:
                 print(str(e))
-# check
+
         elif 'lock window' in query:
             speak("This feature is not supported on macOS")
 
@@ -175,17 +177,17 @@ if __name__ == '__main__':
             a = int(takeCommand())
             time.sleep(a)
             print(a)
-# check
+
         elif "where is" in query:
             query = query.replace("where is", "")
             location = query
             speak("User asked to locate")
             speak(location)
             webbrowser.open("https://www.google.com/maps/place/" + location)
-# check
+
         elif "camera" in query or "take a photo" in query:
             ec.capture(0, "Virtual Assistant Camera ", "img.jpg")
-# check
+
         elif "restart" in query:
             os.system('sudo shutdown -r now')
 
@@ -195,7 +197,7 @@ if __name__ == '__main__':
         elif "log off" in query or "sign out" in query:
             speak("Logging out")
             os.system('killall -u $(whoami)')
-
+#not working
         elif "write a note" in query:
             speak("What should I write, Sir?")
             note = takeCommand()

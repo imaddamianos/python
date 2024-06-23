@@ -5,6 +5,7 @@ import speech_recognition as sr
 import pyttsx3
 import wolframalpha
 
+USER_NAME_FILE = "my_Name.txt"
 
 # Initialize the speech engine
 engine = pyttsx3.init('nsss')  # 'nsss' is the driver for macOS
@@ -29,6 +30,17 @@ def speak(audio):
     engine.say(audio)
     engine.runAndWait()
 
+def load_user_name():
+    try:
+        with open(USER_NAME_FILE, "r") as file:
+            return file.read().strip()
+    except FileNotFoundError:
+        return "siri"  # Default name if file doesn't exist
+
+def save_user_name(name):
+    with open(USER_NAME_FILE, "w") as file:
+        file.write(name)
+
 
 def wishMe():
     """Function to wish the user based on the time of the day"""
@@ -45,19 +57,37 @@ def wishMe():
     speak(assname)
 
 
+def load_user_name():
+    try:
+        with open(USER_NAME_FILE, "r") as file:
+            return file.read().strip()
+    except FileNotFoundError:
+        return ""
+
+def save_user_name(name):
+    with open(USER_NAME_FILE, "w") as file:
+        file.write(name)
+
 def username():
     """Function to get the username of the user"""
-    speak("What should I call you sir")
-    uname = takeCommand()
-    # speak("Welcome Mister")
-    # speak(uname)
+
+    uname = load_user_name()
+    
+    if not uname:  # If the file is empty or does not exist
+        speak("What should I call you, sir?")
+        uname = takeCommand()
+        save_user_name(uname)  # Save the name to file
+    else:
+        speak(f"Welcome back, Mr. {uname}")
+
     columns = shutil.get_terminal_size().columns
 
     print("#####################".center(columns))
     print(f"Welcome Mr. {uname}".center(columns))
     print("#####################".center(columns))
 
-    speak(f" How can I help you, {uname}")
+    speak(f"How can I help you, {uname}")
+
 
 def takeCommand():
     """Function to take commands from the user"""
@@ -92,6 +122,9 @@ def calculate(query):
         print(e)
         speak("I'm sorry, I couldn't calculate that. Please try again.")
 
+def stop_assistant():
+    speak("Assistant is stopping. Thank you for using me.")
+    exit()
 
 def sendEmail(to, content):
     """Function to send email"""
