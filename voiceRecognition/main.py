@@ -14,7 +14,7 @@ from ecapture import ecapture as ec
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 
-from functions import calculate, sendEmail, speak, takeCommand, username, wishMe
+from functions import calculate, sendEmail, speak, stop_assistant, takeCommand, username, wishMe
 
 
 if __name__ == '__main__':
@@ -104,26 +104,18 @@ if __name__ == '__main__':
             speak(assname)
             print("My friends call me", assname)
 
-        elif 'exit' in query:
-            speak("Thanks for giving me your time")
-            exit()
+        elif 'exit' in query or 'stop' in query:
+            stop_assistant()
 # check
         elif "who made you" in query or "who created you" in query:
             speak("I have been created by the genius imad damianos.")
 # check
+
         elif 'joke' in query:
             speak(pyjokes.get_joke())
-
+# check
         elif "calculate" in query:
-            # app_id = "Wolframalpha API id"
-            # client = wolframalpha.Client(app_id)
-            # indx = query.lower().split().index('calculate')
-            # query = query.split()[indx + 1:]
             calculate(query)
-            # res = client.query(' '.join(query))
-            # answer = next(res.results).text
-            # print("The answer is " + answer)
-            # speak("The answer is " + answer)
 
         elif 'search' in query or 'play' in query:
             query = query.replace("search", "")
