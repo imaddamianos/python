@@ -3,10 +3,11 @@ import shutil
 import smtplib
 import speech_recognition as sr
 import pyttsx3
+import wolframalpha
 
 
 # Initialize the speech engine
-engine = pyttsx3.init('dummy')  # 'nsss' is the driver for macOS
+engine = pyttsx3.init('nsss')  # 'nsss' is the driver for macOS
 
 # Get available voices
 voices = engine.getProperty('voices')
@@ -16,11 +17,11 @@ for index, voice in enumerate(voices):
     print(f"Voice {index}: {voice.name}")
 
 # Set the desired voice; you can change the index to use a different voice
-engine.setProperty('voice', voices[0].id)
+engine.setProperty('voice', voices[19].id)
 
 # Optionally, set other properties like volume and rate
-engine.setProperty('rate', 150)  # Speed of speech
-engine.setProperty('volume', 0.9)  # Volume level (0.0 to 1.0)
+engine.setProperty('rate', 175)  # Speed of speech
+engine.setProperty('volume', 1.0)  # Volume level (0.0 to 1.0)
 
 
 def speak(audio):
@@ -39,7 +40,7 @@ def wishMe():
     else:
         speak("Good Evening Sir !")
 
-    assname = "Jarvis 1 point o"
+    assname = "bee"
     speak("I am your Assistant")
     speak(assname)
 
@@ -48,16 +49,15 @@ def username():
     """Function to get the username of the user"""
     speak("What should I call you sir")
     uname = takeCommand()
-    speak("Welcome Mister")
-    speak(uname)
+    # speak("Welcome Mister")
+    # speak(uname)
     columns = shutil.get_terminal_size().columns
 
     print("#####################".center(columns))
     print(f"Welcome Mr. {uname}".center(columns))
     print("#####################".center(columns))
 
-    speak("How can I help you, Sir")
-
+    speak(f" How can I help you, {uname}")
 
 def takeCommand():
     """Function to take commands from the user"""
@@ -77,6 +77,21 @@ def takeCommand():
         return "None"
     return query
 
+def calculate(query):
+    app_id = "5TE5GW-GPKVAK88PX"  # Replace with your WolframAlpha API ID
+    client = wolframalpha.Client(app_id)
+    
+    try:
+        indx = query.lower().split().index('calculate')
+        query = query.split()[indx + 1:]
+        res = client.query(' '.join(query))
+        answer = next(res.results).text
+        print("The answer is " + answer)
+        speak("The answer is " + answer)
+    except Exception as e:
+        print(e)
+        speak("I'm sorry, I couldn't calculate that. Please try again.")
+
 
 def sendEmail(to, content):
     """Function to send email"""
@@ -85,28 +100,6 @@ def sendEmail(to, content):
     server.starttls()
 
     # Enable low security in gmail
-    server.login('your email id', 'your email password')
-    server.sendmail('your email id', to, content)
+    server.login('damianos.imad@gmail.com', 'Im1!ad2@')
+    server.sendmail('damianos.imad@gmail.com', to, content)
     server.close()
-
-
-# Main function
-if __name__ == "__main__":
-    wishMe()
-    username()
-    while True:
-        query = takeCommand().lower()
-
-        # Example command: send an email
-        if 'send email' in query:
-            try:
-                speak("What should I say?")
-                content = takeCommand()
-                to = "receiver's email id"
-                sendEmail(to, content)
-                speak("Email has been sent!")
-            except Exception as e:
-                print(e)
-                speak("I am not able to send this email")
-
-        # Add more commands as needed

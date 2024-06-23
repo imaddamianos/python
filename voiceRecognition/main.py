@@ -14,7 +14,7 @@ from ecapture import ecapture as ec
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 
-from functions import sendEmail, speak, takeCommand, username, wishMe
+from functions import calculate, sendEmail, speak, takeCommand, username, wishMe
 
 
 if __name__ == '__main__':
@@ -25,7 +25,7 @@ if __name__ == '__main__':
     wishMe()
     username()
     
-    assname = "Jarvis"  # Default assistant name
+    assname = "siri"  # Default assistant name
 
     while True:
         query = takeCommand().lower()
@@ -41,24 +41,23 @@ if __name__ == '__main__':
         elif 'open youtube' in query:
             speak("Here you go to Youtube\n")
             webbrowser.open("youtube.com")
+            chrome_path = 'open -a /Applications/Google\ Chrome.app %s'
+            webbrowser.get(chrome_path).open("https://www.youtube.com")
 
         elif 'open google' in query:
             speak("Here you go to Google\n")
-            webbrowser.open("google.com")
-
-        elif 'open stackoverflow' in query:
-            speak("Here you go to Stack Overflow. Happy coding")
-            webbrowser.open("stackoverflow.com")
-
+            chrome_path = 'open -a /Applications/Google\ Chrome.app %s'
+            webbrowser.get(chrome_path).open("https://www.google.com")
+#check
         elif 'play music' in query or "play song" in query:
             speak("Here you go with music")
-            music_dir = "/Users/your_username/Music"  # Update this path
+            music_dir = "/Users/imad/Downloads/AUDIO-2024-06-16-12-40-20.mp3"  # Update this path
             songs = os.listdir(music_dir)
             print(songs)
             os.system(f"open {os.path.join(music_dir, songs[1])}")
 
         elif 'the time' in query:
-            strTime = datetime.datetime.now().strftime("%H:%M:%S")
+            strTime = datetime.datetime.now().strftime("%H:%M")
             speak(f"Sir, the time is {strTime}")
 
         elif 'email to gaurav' in query:
@@ -83,14 +82,14 @@ if __name__ == '__main__':
             except Exception as e:
                 print(e)
                 speak("I am not able to send this email")
-
+# check
         elif 'how are you' in query:
             speak("I am fine, Thank you")
             speak("How are you, Sir")
 
         elif 'fine' in query or "good" in query:
             speak("It's good to know that you're fine")
-
+# check
         elif "change my name to" in query:
             query = query.replace("change my name to", "")
             assname = query
@@ -108,31 +107,32 @@ if __name__ == '__main__':
         elif 'exit' in query:
             speak("Thanks for giving me your time")
             exit()
-
+# check
         elif "who made you" in query or "who created you" in query:
-            speak("I have been created by Gaurav.")
-
+            speak("I have been created by the genius imad damianos.")
+# check
         elif 'joke' in query:
             speak(pyjokes.get_joke())
 
         elif "calculate" in query:
-            app_id = "Wolframalpha API id"
-            client = wolframalpha.Client(app_id)
-            indx = query.lower().split().index('calculate')
-            query = query.split()[indx + 1:]
-            res = client.query(' '.join(query))
-            answer = next(res.results).text
-            print("The answer is " + answer)
-            speak("The answer is " + answer)
+            # app_id = "Wolframalpha API id"
+            # client = wolframalpha.Client(app_id)
+            # indx = query.lower().split().index('calculate')
+            # query = query.split()[indx + 1:]
+            calculate(query)
+            # res = client.query(' '.join(query))
+            # answer = next(res.results).text
+            # print("The answer is " + answer)
+            # speak("The answer is " + answer)
 
         elif 'search' in query or 'play' in query:
             query = query.replace("search", "")
             query = query.replace("play", "")
             webbrowser.open(query)
-
+# check
         elif "who i am" in query:
             speak("If you talk then definitely you're human.")
-
+# check
         elif "why you came to the world" in query:
             speak("Thanks to Gaurav. Further, it's a secret")
 
@@ -140,16 +140,16 @@ if __name__ == '__main__':
             speak("Opening PowerPoint presentation")
             power = "/Users/your_username/Documents/Presentation/Voice_Assistant.pptx"  # Update this path
             os.system(f"open {power}")
-
+# check
         elif 'is love' in query:
             speak("It is the 7th sense that destroys all other senses")
-
+# check
         elif "who are you" in query:
             speak("I am your virtual assistant created by Gaurav")
-
+# check
         elif 'reason for you' in query:
             speak("I was created as a Minor project by Mister Gaurav")
-
+# checkv
         elif 'change background' in query:
             speak("This feature is not supported on macOS")
 
@@ -167,7 +167,7 @@ if __name__ == '__main__':
                     i += 1
             except Exception as e:
                 print(str(e))
-
+# check
         elif 'lock window' in query:
             speak("This feature is not supported on macOS")
 
@@ -183,17 +183,17 @@ if __name__ == '__main__':
             a = int(takeCommand())
             time.sleep(a)
             print(a)
-
+# check
         elif "where is" in query:
             query = query.replace("where is", "")
             location = query
             speak("User asked to locate")
             speak(location)
             webbrowser.open("https://www.google.com/maps/place/" + location)
-
+# check
         elif "camera" in query or "take a photo" in query:
             ec.capture(0, "Virtual Assistant Camera ", "img.jpg")
-
+# check
         elif "restart" in query:
             os.system('sudo shutdown -r now')
 
@@ -240,8 +240,8 @@ if __name__ == '__main__':
             speak(assname)
 
         elif "weather" in query:
-            api_key = "YOUR_API_KEY"
-            base_url = "http://api.openweathermap.org/data/2.5/weather?"
+            api_key = "3b6cf8537a21f9805f032b0e659dd4df"
+            base_url = "http://api.openweathermap.org/data/2.5/forecast?id=524901"
             speak("City name")
             print("City name: ")
             city_name = takeCommand()
@@ -285,6 +285,9 @@ if __name__ == '__main__':
 
         elif "how are you" in query:
             speak("I'm fine, glad you asked")
+
+        elif "do you have a lighter" in query:
+            speak("No, I don't smoke")
 
         elif "i love you" in query:
             speak("It's hard to understand")
