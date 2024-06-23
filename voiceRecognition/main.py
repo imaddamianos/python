@@ -14,7 +14,7 @@ from ecapture import ecapture as ec
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 
-from functions import calculate, load_user_name, save_user_name, sendEmail, speak, stop_assistant, takeCommand, username, wishMe
+from functions import calculate, load_user_name, save_user_name, sendEmail, speak, stop_assistant, takeCommand, username, weather, wishMe
 
 
 if __name__ == '__main__':
@@ -234,29 +234,7 @@ if __name__ == '__main__':
             speak(assname)
 
         elif "weather" in query:
-            api_key = "3b6cf8537a21f9805f032b0e659dd4df"
-            base_url = "http://api.openweathermap.org/data/2.5/forecast?id=524901"
-            speak("City name")
-            print("City name: ")
-            city_name = takeCommand()
-            complete_url = base_url + "appid=" + api_key + "&q=" + city_name
-            response = requests.get(complete_url)
-            x = response.json()
-            if x["cod"] != "404":
-                y = x["main"]
-                current_temperature = y["temp"]
-                current_pressure = y["pressure"]
-                current_humidity = y["humidity"]
-                z = x["weather"]
-                weather_description = z[0]["description"]
-                print(" Temperature (in kelvin unit) = " + str(current_temperature) +
-                      "\n atmospheric pressure (in hPa unit) =" + str(current_pressure) +
-                      "\n humidity (in percentage) = " + str(current_humidity) +
-                      "\n description = " + str(weather_description))
-                speak(f"Temperature is {current_temperature} kelvin, pressure is {current_pressure} hPa, "
-                      f"humidity is {current_humidity} percent, and the weather description is {weather_description}")
-            else:
-                speak("City Not Found")
+            weather()
 
         elif "send message" in query:
             account_sid = 'ACCOUNT_SID'
