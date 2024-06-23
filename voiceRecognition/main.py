@@ -24,9 +24,9 @@ if __name__ == '__main__':
 
     wishMe()
     username()
-    assname = load_user_name()
+    uname = load_user_name()
+    assname = 'bee'
     
-    # assname = "siri"  # Default assistant name
 
     while True:
         query = takeCommand().lower()
@@ -94,10 +94,10 @@ if __name__ == '__main__':
         elif "change my name to" in query:
             query = query.replace("change my name to", "")
             save_user_name(query)
-            assname = query
+            uname = query
             speak(f"I will call you {query}")
 
-        elif "change name" in query:
+        elif "change your name" in query:
             speak("What would you like to call me, Sir?")
             assname = takeCommand()
             speak("Thanks for naming me")
@@ -106,6 +106,10 @@ if __name__ == '__main__':
             speak("My friends call me")
             speak(assname)
             print("My friends call me", assname)
+
+        elif "what's my name" in query or "what is my name" in query:
+            speak("Your name is ")
+            speak(uname)
 
         elif 'exit' in query or 'stop' in query:
             stop_assistant()
